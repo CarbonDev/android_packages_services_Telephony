@@ -1843,9 +1843,11 @@ public class CallFeaturesSetting extends PreferenceActivity
         onCreateLookupPrefs();
 
         mAllowCallRecording = (CheckBoxPreference) findPreference(BUTTON_ALLOW_CALL_RECORDING);
-        mAllowCallRecording.setChecked(Settings.System.getBoolean(getContentResolver(),
-                Settings.System.ALLOW_CALL_RECORDING, false));
-
+        // to avoid null pointer exception when SIM Settings clicked from dialer option.
+        if (mAllowCallRecording != null) {
+                mAllowCallRecording.setChecked(Settings.System.getBoolean(getContentResolver(),
+                        Settings.System.ALLOW_CALL_RECORDING, false));
+        }
         // create intent to bring up contact list
         mContactListIntent = new Intent(Intent.ACTION_GET_CONTENT);
         mContactListIntent.setType(android.provider.Contacts.Phones.CONTENT_ITEM_TYPE);
